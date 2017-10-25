@@ -1,9 +1,15 @@
 #!/usr/bin/env python
 
+import sys
+import os
+print(sys.path)
+sys.path.append(os.path.dirname("KirillGame/"))
+
 import threading
 from  threading import Thread
 
-from KirillGame import *
+
+import game
 
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import Filename, Shader
@@ -212,7 +218,7 @@ class GlowDemo(ShowBase):
 
 demo = GlowDemo()
 
-Thread(target = demo.run).start()
-Thread(target = demo.run).start()
+#Thread(target = demo.run).start()
+Thread(target = game.main).start()
 
-#demo.run()
+demo.run()
