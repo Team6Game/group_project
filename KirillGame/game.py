@@ -184,7 +184,8 @@ def execute_take(item_id):
             if(item in player.inventory):
                 next(x for x in player.inventory if isinstance(x, type(item))).iQuantity += 1
             else:
-                player.inventory.append(item)
+                #player.inventory.append(item)
+                item.add(player)
             print("You add the item to your inventory.")
             player.updateMass()    
             player.current_room["items"].remove(item)
@@ -200,8 +201,8 @@ def execute_drop(item_id):
     for item in player.inventory:
         if item.sName.upper() in item_id.upper() and not item.sName.upper() == "HANDBOOK":
             player.current_room["items"].append(item)
-            player.inventory.remove(item)
-            #item.deplete(player)
+            #player.inventory.remove(item)
+            item.deplete(player)
             player.updateMass()
             return
 

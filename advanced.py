@@ -7,6 +7,7 @@ sys.path.append(os.path.dirname("KirillGame/"))
 
 import threading
 from  threading import Thread
+from multiprocessing import Process
 
 
 import game
@@ -210,15 +211,31 @@ class GlowDemo(ShowBase):
         self.tron.loop("running")
         self.interval.loop()
            
-        def updateStats(health, sanity, intelligence):
-            healthObject.setText("Health: " + str(health))
-            sanityObject.setText("Sanity: " + str(sanity))
-            intObject.setText("Intelligence: " + str(intelligence))
+    def updateStats(health, sanity, intelligence):
+        healthObject.setText("Health: " + str(health))
+        sanityObject.setText("Sanity: " + str(sanity))
+        intObject.setText("Intelligence: " + str(intelligence))
 
+    def run(self):
+        def __init__(self):
+            pass
+        super().run()
 
+        
 demo = GlowDemo()
+#from direct.task import LoopingCall
+from time import sleep
+while True:
+    demo.taskMgr.step
+    sleep(1)
 
-#Thread(target = demo.run).start()
-Thread(target = game.main).start()
+#game.main()
 
-demo.run()
+#Thread(GlowDemo().run)
+
+#t2 = Thread(target = demo.wxApp.MainLoop)
+#t2.start()
+#t1 = Thread(target = game.main)
+#t1.start()
+
+#demo.run()

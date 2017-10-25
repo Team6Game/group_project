@@ -42,10 +42,10 @@ class GenericItem:
             print("You have used all of this item!")
             p.inventory.remove(self)
             
-    #def add(self):
-    #    print("You add the item to your inventory.")
-    #    self.iQuantity += 1
-        #p.inventory.append(self)
+    def add(self):
+        print("You add the item to your inventory.")
+        self.iQuantity += 1
+        p.inventory.append(self)
 
     # These two functions are required by Python in order to use GenericItem as a key in the player's inventory
     # Keys must be unique, and so I must provide functions to hash the object, and to equate it.
@@ -89,7 +89,7 @@ class Consumable(GenericItem):
 class Coffee(Consumable):
     def __init__(self, q=1):
         super().__init__("Coffee", "A flask of coffee from Starbucks. The scrawled name on the side reads 'Kerry Ill'.", 500)
-        self.fHealthRestored = 25
+        self.fHealthRestored = 50
         self.fSanityRestored = 0
         self.iQuantity = q
     
