@@ -9,7 +9,6 @@ import threading
 from  threading import Thread
 from multiprocessing import Process
 
-
 import game
 
 from direct.showbase.ShowBase import ShowBase
@@ -78,6 +77,8 @@ def makeFilterBuffer(srcbuffer, name, sort, prog):
     return blurBuffer
 
 class GlowDemo(ShowBase):
+    
+    mainThread = 0
 
     def __init__(self):
         # Initialize the ShowBase class from which we inherit, which will
@@ -106,9 +107,9 @@ class GlowDemo(ShowBase):
         textObject.setFont(fontToUse)
         #add button
         
-        #b = DirectEntry(text = "" ,width=base.win.getXSize(), scale=0.05,command=setText(),initialText="Type Something", numLines = 2,focus=1,focusInCommand=clearText, entryFont=fontToUse, text_fg=(1.0,1.0,1.0,1.0), frameColor=(0.0,0.0,0.0,1.0))
-        #b.reparentTo(base.a2dBottomLeft)
-        #b.setPos(+0.0,0, +0.15)
+        b = DirectEntry(text = "" ,width=base.win.getXSize(), scale=0.05,command=setText(),initialText="Type Something", numLines = 2,focus=1,focusInCommand=clearText, entryFont=fontToUse, text_fg=(1.0,1.0,1.0,1.0), frameColor=(0.0,0.0,0.0,1.0))
+        b.reparentTo(base.a2dBottomLeft)
+        b.setPos(+0.0,0, +0.15)
         
         ################
 
@@ -197,7 +198,7 @@ class GlowDemo(ShowBase):
 
         # event handling
         #self.accept("space", self.toggleGlow)
-        #self.accept("enter", self.toggleDisplay)
+        self.accept("enter", self.sendMessage)
         #self.accept("escape", sys.exit, [0])
 
         self.glowOn = True
@@ -210,11 +211,17 @@ class GlowDemo(ShowBase):
         self.tron.setHpr(0, 0, 0)
         self.tron.loop("running")
         self.interval.loop()
+        
+        self.mainThread = game.mainThread()
+        
            
     def updateStats(health, sanity, intelligence):
         healthObject.setText("Health: " + str(health))
         sanityObject.setText("Sanity: " + str(sanity))
         intObject.setText("Intelligence: " + str(intelligence))
+
+    def sendMessage(self):
+        
 
     def run(self):
         def __init__(self):
@@ -226,9 +233,25 @@ demo = GlowDemo()
 from direct.task import *
 from time import sleep
 #taskMgr.add(GlowDemo(), "demo")
-while True:
-    demo.taskMgr.step()
-    sleep(1)
+
+import threading
+import multiprocessing
+
+def runLoop():
+#    thread = game.getMainThread(demo)
+#    thread.start()
+    while True:
+        demo.taskMgr.step()
+        sleep(0.03)
+
+thread2 = threading.Thread(target=runLoop())
+
+
+#thread.start()
+thread2.start()
+
+#thread.join
+#thread2.join
 
 #game.main()
 

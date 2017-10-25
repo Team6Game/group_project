@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 
 
+global fighting
+fighting = False
+
 ##### NEED TO DO:
 ##### clean up text
 ##### graphics
@@ -258,43 +261,58 @@ def execute_fight_command(command, enemy):
         print("That makes no sense.")
         return False
 
-def fight_loop(enemy_id): #TODO: UPDATE THIS TO OO
+
+global currentEnemy
+
+def fight_loop(enemy_id = None, command):
+   
+    enemy_id = currentEnemy
+   
     for enemy in player.current_room["enemies"]:
         if enemy.sName.upper() in enemy_id.upper():
 
             print(enemy.sDesc, end="\n\n")
             
-            while enemy.bAlive and player.isAlive:
-                print_inventory_items(player.inventory)
-                print("Enemy health: " + str(enemy.iHealth) + "/" + str(enemy.iMaxHealth))
-                print("You can:\nATTACK with an item\nUSE an item\nLEAVE")
-                print("How do you wish to fight " + enemy.sName + "?\n")
-                #fight_command = input("> ")
-                #fight_command = normalise_input(fight_command)
-                
+            ######
+            #while enemy.bAlive and player.isAlive:
+            print_inventory_items(player.inventory)
+            print("Enemy health: " + str(enemy.iHealth) + "/" + str(enemy.iMaxHealth))
+            print("You can:\nATTACK with an item\nUSE an item\nLEAVE")
+            print("How do you wish to fight " + enemy.sName + "?\n")
+            #fight_command = input("> ")
+            #fight_command = normalise_input(fight_command)
+            
+            playerTurn = True
+            
+            #while(playerTurn):
+            fight_command = command# input("> ")
+            
+            
+            if(command == None):
+                return
+            
+            fight_command = normalise_input(fight_command)
+            
+            if execute_fight_command(fight_command, enemy):
+                playerTurn = False
+                break
+            else: 
                 playerTurn = True
                 
-                while(playerTurn):
-                    fight_command = input("> ")
-                    fight_command = normalise_input(fight_command)
-                    
-                    if execute_fight_command(fight_command, enemy):
-                        playerTurn = False
-                        break
-                    else: 
-                        playerTurn = True
-                    
-                if player.bIsAWimp:
-                    player.bIsAWimp = False
-                    return
-                else:
-                    enemy_attack(enemy)
-                if enemy.iHealth <= 0:
-                    enemy.bAlive = False
-                    enemy.die(player)
-                
-                player.checkDeath()
-                print("\n=====================================\n\n")
+            if player.bIsAWimp:
+                player.bIsAWimp = False
+                return
+            else:
+                enemy_attack(enemy)
+            if enemy.iHealth <= 0:
+                enemy.bAlive = False
+                enemy.die(player)
+                fighting = False
+                currentEnemy = None
+            
+            player.checkDeath()
+            print("\n=====================================\n\n")
+            ######
                 
     if(player.isAlive):
         print("Success! " + enemy.sName + " has been defeated.")
@@ -398,7 +416,10 @@ def execute_command(command):
         
         if len(command) > 1:
             if(command[1].upper() != Boss.sName or count >= 8):
-                fight_loop(command[1])
+                #fight_loop(command[1])
+                currentEnemy = command[1]
+                fighting = True
+                fight_loop(None, None)
             else:
                 print("You require all 8 survey results to fight the Algorithm!")
         else:
@@ -414,13 +435,13 @@ def execute_command(command):
         print("This makes no sense.")
 
 
-def menu(exits, room_items, inv_items):
+def menu(exits, room_items, inv_items, EXTERNAL_INPUT):
 
     # Display menu
     print_menu(exits, room_items, inv_items)
 
     # Read player's input
-    user_input = input("> ")
+    user_input = EXTERNAL_INPUT#input("> ")
 
     # Normalise the input
     normalised_user_input = normalise_input(user_input)
@@ -444,6 +465,48 @@ def move(exits, direction):
     # Next room to go to
     return rooms[exits[direction]]
 
+
+
+class mainThread:
+   
+    def __init__(self):
+        global player
+        player = Player()
+        
+        global winCond
+        winCond = False
+        
+        print_room(player.current_room)
+    
+    def cycle(self, EXTERNAL_INPUT):
+        if not fighting:
+            if(player.isAlive() and not winCond):
+                #if current_room == rooms["Tutor"] and current_room["items"]==[item_pen]:
+                print_inventory_items(player.inventory)
+        
+                # Show the menu with possible actions and ask the player
+                #command = menu(player.current_room["exits"], player.current_room["items"], player.inventory)
+                
+                print_menu(player.current_room["exits"],  player.current_room["items"], player.inventory)
+                
+                command = normalise_input(EXTERNAL_INPUT)
+        
+                # Execute the player's command
+                execute_command(command)
+                
+                player.checkDeath()
+                
+                if player.current_room["name"] == "A Brightly Lit Room":
+                    player.health = 0
+                
+                print("\n=====================================\n\n")
+                
+                winCond = player.checkWin()
+                
+            if(winCond and player.isAlive()):
+                print("You've won!")
+        else:
+            fight_loop(enemy_id, command)
 
 # This is the entry point of our program
 def main():
@@ -473,10 +536,17 @@ def main():
         print("\n=====================================\n\n")
         
         winCond = player.checkWin()
-    
+  
     if(winCond and player.isAlive()):
         print("You've won!")
 
+import threading
+#import multiprocessing
+def getMainThread(p3d):
+    thread = threading.Thread(target=main(p3d))
+    thread.start()
+    return thread
+    #return multiprocessing.Process(target=main(p3d))
 
 # Are we being run as a script? If so, run main().
 # '__main__' is the name of the scope in which top-level code executes.
