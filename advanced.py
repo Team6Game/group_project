@@ -1,27 +1,47 @@
 #!/usr/bin/env python
 
-# Author: Kwasi Mensah (kmensah@andrew.cmu.edu)
-# Date: 7/25/2005
+from game import main
 
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import Filename, Shader
 from panda3d.core import PandaNode, NodePath
 from panda3d.core import ColorBlendAttrib
 from panda3d.core import AmbientLight, DirectionalLight
-from panda3d.core import TextNode, LPoint3, LVector4
+from panda3d.core import TextNode, LPoint3, LVector4, LVector3
 from direct.showbase.DirectObject import DirectObject
 from direct.gui.OnscreenText import OnscreenText
 from direct.actor.Actor import Actor
+from direct.gui.DirectGui import *
+
+from direct.gui.OnscreenText import OnscreenText 
+from direct.gui.DirectGui import *
+from panda3d.core import *
+
+from direct.showbase.ShowBase import ShowBase
+from panda3d.core import AmbientLight, DirectionalLight
+from panda3d.core import TextNode, NodePath, LightAttrib
+from panda3d.core import LVector3
+from direct.actor.Actor import Actor
+from direct.task.Task import Task
+from direct.gui.OnscreenText import OnscreenText
+from direct.showbase.DirectObject import DirectObject
+
+from direct.showbase.ShowBase import ShowBase  
+from pandac import *
+from direct import *
+from panda3d.core import *
+from direct.showbase.Loader import *
+#import direct.directbase.DirectStart # Fucks it up
+
+
 import sys
 import os
 
-# Function to put instructions on the screen.
 def addInstructions(pos, msg):
     return OnscreenText(text=msg, style=1, fg=(1, 1, 1, 1),
                         parent=base.a2dTopLeft, align=TextNode.ALeft,
                         pos=(0.08, -pos - 0.04), scale=.05)
 
-# Function to put title on the screen.
 def addTitle(text):
     return OnscreenText(text=text, style=1, fg=(1, 1, 1, 1),
                         parent=base.a2dBottomRight, align=TextNode.ARight,
@@ -30,7 +50,7 @@ def addTitle(text):
 
 # This function is responsible for setting up the two blur filters.
 # It just makes a temp Buffer, puts a screen aligned card, and then sets
-# the appropiate shader to do all the work. Gaussian blurs are decomposable
+# the appropriate shader to do all the work. Gaussian blurs are decomposable
 # into a two-pass algorithm which is faster than the equivalent one-pass
 # algorithm, so we do it in two passes: one pass that blurs in the horizontal
 # direction, and one in the vertical direction.
@@ -47,18 +67,47 @@ def makeFilterBuffer(srcbuffer, name, sort, prog):
     card.setShader(shader)
     return blurBuffer
 
-
 class GlowDemo(ShowBase):
 
     def __init__(self):
         # Initialize the ShowBase class from which we inherit, which will
         # create a window and set up everything we need for rendering into it.
         ShowBase.__init__(self)
+        
+        ################
+        #callback function for when text is entered into the field with <Return>
+        def setText(textEntered=""):
+            textObject.setText(textEntered)
+             
+        #clear the text
+        def clearText():
+            b.enterText('')
+            
+        fontToUse = loader.loadFont('Minecraft.ttf', minFilter=0, magFilter=0) 
+        fontToUse.setPixelsPerUnit(30)
+                
+        bk_text = "Kirill: "
+        #global textObject
+        textObject = OnscreenText(text = bk_text, pos = (0.95,-0.45), scale = 0.07, fg=(1.0,0.5,0.5, 1.0), align=TextNode.ACenter, mayChange=1)
+        healthObject = OnscreenText(text = "Health: ", pos = (0.45,-0.55), scale = 0.07, fg=(1.0,0.5,0.5, 1.0), align=TextNode.ALeft, mayChange=1)
+        sanityObject = OnscreenText(text = "Sanity: ", pos = (0.45,-0.65), scale = 0.07, fg=(1.0,0.5,0.5, 1.0), align=TextNode.ALeft, mayChange=1)
+        intObject = OnscreenText(text = "Intelligence: ", pos = (0.45,-0.75), scale = 0.07, fg=(1.0,0.5,0.5, 1.0), align=TextNode.ALeft, mayChange=1)
+        
+        textObject.setFont(fontToUse)
+        #add button
+        
+        #b = DirectEntry(text = "" ,width=base.win.getXSize(), scale=0.05,command=setText(),initialText="Type Something", numLines = 2,focus=1,focusInCommand=clearText, entryFont=fontToUse, text_fg=(1.0,1.0,1.0,1.0), frameColor=(0.0,0.0,0.0,1.0))
+        #b.reparentTo(base.a2dBottomLeft)
+        #b.setPos(+0.0,0, +0.15)
+        
+        ################
 
         base.disableMouse()
         base.setBackgroundColor(0, 0, 0)
-        camera.setPos(0, -50, 0)
-
+        #camera.setPos(0, -50, 0)
+        camera.setPos(0, -1, 0)
+        base.camLens.setFov(25)
+        
         # Check video card capabilities.
         if not base.win.getGsg().getSupportsBasicShaders():
             addTitle(
@@ -66,21 +115,22 @@ class GlowDemo(ShowBase):
             return
 
         # Post the instructions
-        self.title = addTitle("Panda3D: Tutorial - Glow Filter")
-        self.inst1 = addInstructions(0.06, "ESC: Quit")
-        self.inst2 = addInstructions(0.12, "Space: Toggle Glow Filter On/Off")
-        self.inst3 = addInstructions(0.18, "Enter: Toggle Running/Spinning")
-        self.inst4 = addInstructions(0.24, "V: View the render-to-texture results")
+        #self.title = addTitle("Untitled Kirill Game - Test")
+        #self.inst1 = addInstructions(0.06, "ESC: Quit")
+        #self.inst2 = addInstructions(0.12, "Space: Toggle Glow Filter On/Off")
+        #self.inst3 = addInstructions(0.18, "Enter: Toggle Running/Spinning")
+        #self.inst4 = addInstructions(0.24, "V: View the render-to-texture results")
 
-        # Create the shader that will determime what parts of the scene will
+        # Create the shader that will determine what parts of the scene will
         # glow
         glowShader = loader.loadShader("shaders/glowShader.sha")
 
         # load our model
         self.tron = Actor()
-        self.tron.loadModel("models/tron")
-        self.tron.loadAnims({"running": "models/tron_anim"})
+        self.tron.loadModel("models/kirill rig.egg")
+        self.tron.loadAnims({"running": "models/kirill rig-Walk.egg"})
         self.tron.reparentTo(render)
+        self.tron.setScale(3)
         self.interval = self.tron.hprInterval(60, LPoint3(360, 0, 0))
         self.interval.loop()
         self.isRunning = False
@@ -136,31 +186,28 @@ class GlowDemo(ShowBase):
         base.bufferViewer.setCardSize(0.652, 0)
 
         # event handling
-        self.accept("space", self.toggleGlow)
-        self.accept("enter", self.toggleDisplay)
-        self.accept("escape", sys.exit, [0])
+        #self.accept("space", self.toggleGlow)
+        #self.accept("enter", self.toggleDisplay)
+        #self.accept("escape", sys.exit, [0])
 
         self.glowOn = True
+        
+        self.finalcard.reparentTo(hidden)
+        
+        #camera.setPos(0, -170, -3)
+        camera.setPos(0, -50, 7)
+        self.interval.finish()
+        self.tron.setHpr(0, 0, 0)
+        self.tron.loop("running")
+        self.interval.loop()
+           
+        def updateStats(health, sanity, intelligence):
+            healthObject.setText("Health: " + str(health))
+            sanityObject.setText("Sanity: " + str(sanity))
+            intObject.setText("Intelligence: " + str(intelligence))
 
-    def toggleGlow(self):
-        if self.glowOn:
-            self.finalcard.reparentTo(hidden)
-        else:
-            self.finalcard.reparentTo(render2d)
-        self.glowOn = not(self.glowOn)
 
-    def toggleDisplay(self):
-        self.isRunning = not(self.isRunning)
-        if not(self.isRunning):
-            camera.setPos(0, -50, 0)
-            self.tron.stop("running")
-            self.tron.pose("running", 0)
-            self.interval.loop()
-        else:
-            camera.setPos(0, -170, 3)
-            self.interval.finish()
-            self.tron.setHpr(0, 0, 0)
-            self.tron.loop("running")
-
+thread.start_new_thread()
+            
 demo = GlowDemo()
 demo.run()
