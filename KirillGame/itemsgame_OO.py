@@ -111,7 +111,7 @@ class Cigarette(Consumable):
             print("You feel calmer now. \nYour sanity has been restored")
             print("But, your health has been drained.")
         else: 
-            print ("You're not allowed to smoke indoors!")
+            print ("You're not allowed to smoke indoors so your cigarette is taken away!")
 
 class Vape(Consumable):
     def __init__(self, q=1):
