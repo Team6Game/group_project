@@ -223,10 +223,11 @@ class GlowDemo(ShowBase):
 
         
 demo = GlowDemo()
-#from direct.task import LoopingCall
+from direct.task import *
 from time import sleep
+#taskMgr.add(GlowDemo(), "demo")
 while True:
-    demo.taskMgr.step
+    demo.taskMgr.step()
     sleep(1)
 
 #game.main()
