@@ -42,7 +42,7 @@ class GenericItem:
             print("You have used all of this item!")
             p.inventory.remove(self)
             
-    def add(self):
+    def add(self,p):
         print("You add the item to your inventory.")
         self.iQuantity += 1
         p.inventory.append(self)
