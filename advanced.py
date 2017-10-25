@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
-from game import main
+import threading
+from  threading import Thread
+
+from KirillGame import *
 
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import Filename, Shader
@@ -207,7 +210,9 @@ class GlowDemo(ShowBase):
             intObject.setText("Intelligence: " + str(intelligence))
 
 
-thread.start_new_thread()
-            
 demo = GlowDemo()
-demo.run()
+
+Thread(target = demo.run).start()
+Thread(target = demo.run).start()
+
+#demo.run()

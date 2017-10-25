@@ -200,8 +200,8 @@ def execute_drop(item_id):
     for item in player.inventory:
         if item.sName.upper() in item_id.upper() and not item.sName.upper() == "HANDBOOK":
             player.current_room["items"].append(item)
-            #player.inventory.remove(item)
-            item.deplete(player)
+            player.inventory.remove(item)
+            #item.deplete(player)
             player.updateMass()
             return
 
