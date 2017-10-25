@@ -99,7 +99,7 @@ class Player(Actor):
     
     def __init__(self):
         Actor.__init__(self, "Kirill", 100, 50, 25)
-        self.inventory = [Handbook(), Coffee(1), Cigarette(2), Printcred(1)]
+        self.inventory = [Handbook(), Coffee(1), Cigarette(3), Printcred(1)]
         
     def checkDeath(self):
         if(self.health <= 0 or self.sanity <= 0):
