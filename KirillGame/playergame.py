@@ -88,7 +88,7 @@ class Player(Actor):
     # You can choose to attack or use an item on your turn
     # You can use items outside of combat, e.g. read a book, but it may not be strategically sound to do so (You don't know if you'll need the book to attack later, or whether you should read it for intelligence)
     
-    slapDamage = 10
+    slapDamage = 25
     
     mass = 0
     maxMass = 4000
@@ -130,9 +130,9 @@ class Player(Actor):
         return False # Screw carry-weights. We're not Bethesda.
 
     # Damages an enemy using bare hands
-    def slapTheShitOutOf(self, enemy):
+    def slap(self, enemy):
         enemy.iHealth -= self.slapDamage * (enemy.fVulnerabilityMult if (enemy.objVulnerability == type("These Hands")) else 1)
-        
+      
 class Enemy(Actor):
     
     # 20 HP of damage each hit, adjusted for in the damage function with sanity

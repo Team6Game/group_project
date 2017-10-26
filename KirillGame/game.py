@@ -305,7 +305,7 @@ def execute_attack(weapon, enemy):
     hit_success = False
         
     if(weapon.upper() in "HANDS"):
-        player.slapTheShitOutOf(enemy)
+        player.slap(enemy)
         hit_success = True
         return
         
