@@ -14,7 +14,7 @@ room_1 = {"name":"Library",
 room_2 = {"name": "Amazon Rainforest",
           "description": 
 """You have now entered your dream in a place that you don't recognise.\nYou can hear the sounds of birds, insects and the rustle of the trees that\nyou have just realised are surrounding you in every direction! To your amazement\nyou see an Amazon kingfisher, which means you must be in the Amazon Rainforest!\nWhy?! I don't know, it's your dream.""",
-          "exits": { "south": "Library", "west": "The White House"},
+          "exits": { "south": "Library", "west": "The White House", "east": "A Brightly Lit Room"},
           "items": [],
           "enemies": []
           }

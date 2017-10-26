@@ -475,7 +475,8 @@ def main():
         winCond = player.checkWin()
     
     if(winCond and player.isAlive()):
-        print("You've won!")
+        print("""You wake up dazed and confused! And notice only a minute has passed since you’ve last looked at the clock. You remember the dream you’ve just had and sign in relief as you successfully completed your goal! But wait was that a dream, or did you really get the final surveys… 
+To be continued""")
 
 
 # Are we being run as a script? If so, run main().

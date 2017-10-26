@@ -156,7 +156,7 @@ class Book(Weapon):
 class Handbook(Weapon):
     def __init__(self, q=1):
         super().__init__("Handbook", "Handbook\n\nObjective: Your aim is to collect 8 surveys from students, so that you can complete your graphs and group allocations. To get the surveys, you must answer a series of questions from each student.\n\nCommands:\n\nType 'go <direction>' in order to move your character to that area.\nType 'use <item>' to use one of your items from your inventory.\nType 'drop <item>' to drop an item from your inventory, into the room.\nType 'fight <student name>' to start the battle with student. (where there is a student in the room)\nType 'print <book/thesis>' to print a book or thesis. (only available in the library)\nIn combat:\nType 'attack with <item>' to attack with that item.\nType 'use <item>' to use that item.\nType 'leave' to flee from the fight.\n\n\nItems:\n\nHandbook: Your guide, and a weapon for fighting.\nCigarette: Replenishes sanity, but reduces health. (only usable outdoors)\nVape: Replenishes sanity, no effect to health. (only usable outdoors)\nBook: Stronger weapon for fighting. Provides some intelligene when read.\nThesis: Strongest weapon for fighting, provides the most intelligence when read.\nSurvey: Your reward for defeating the students, needed to win the game.\nPrint credits: Currency used to print books/thesis. (only usable in the library)\nCoffee: Replenishes health.\n",
-                         15,
+                         30,
                          400)
         self.iQuantity = q
         self.bFinite = False
@@ -174,7 +174,7 @@ class Handbook(Weapon):
         
 class Thesis(Book):
     def __init__(self, q=1):
-        super().__init__("Thesis", "'Learnt Real-time Meshless Simulation'. The paper's abstract explains a novel approach to simulating realistic soft-bodies in Computer Graphics. Can be used to attack, or can be read for bonus intelligence.", 75, 25, 5, mass = 400)
+        super().__init__("Thesis", "'Learnt Real-time Meshless Simulation'. The paper's abstract explains a novel approach to simulating realistic soft-bodies in Computer Graphics. Can be used to attack, or can be read for bonus intelligence.", 90, 25, 5, mass = 400)
         self.iQuantity = q
         self.iCost = 5
         
@@ -185,7 +185,7 @@ class Thesis(Book):
 
 class Textbook(Book):
     def __init__(self, quantity=1):
-        super().__init__("Book", "'Introduction to Python' Textbook. Can be used to attack, or can be read for a small intelligence bonus", 30, 10, 1, mass = 250)
+        super().__init__("Book", "'Introduction to Python' Textbook. Can be used to attack, or can be read for a small intelligence bonus", 50, 10, 1, mass = 250)
         self.iQuantity = quantity
 
 class Printcred(GenericItem):
