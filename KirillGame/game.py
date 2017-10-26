@@ -264,7 +264,7 @@ def execute_fight_command(command, enemy):
 
 global currentEnemy
 
-def fight_loop(enemy_id = None, command):
+def fight_loop(enemy_id, command):
    
     enemy_id = currentEnemy
    
@@ -468,46 +468,51 @@ def move(exits, direction):
 
 
 class mainThread:
-   
-    def __init__(self):
-        global player
-        player = Player()
+    
+    
+    
         
+    def __init__(self):
         global winCond
         winCond = False
         
+        global player
+        player = Player()
         print_room(player.current_room)
     
     def cycle(self, EXTERNAL_INPUT):
-        if not fighting:
-            if(player.isAlive() and not winCond):
-                #if current_room == rooms["Tutor"] and current_room["items"]==[item_pen]:
-                print_inventory_items(player.inventory)
-        
-                # Show the menu with possible actions and ask the player
-                #command = menu(player.current_room["exits"], player.current_room["items"], player.inventory)
-                
-                print_menu(player.current_room["exits"],  player.current_room["items"], player.inventory)
-                
-                command = normalise_input(EXTERNAL_INPUT)
-        
-                # Execute the player's command
-                execute_command(command)
-                
+        if(EXTERNAL_INPUT != None):
+            if not fighting:
+                if(player.isAlive() and not winCond):
+                    #if current_room == rooms["Tutor"] and current_room["items"]==[item_pen]:
+                    print_inventory_items(player.inventory)
+            
+                    # Show the menu with possible actions and ask the player
+                    #command = menu(player.current_room["exits"], player.current_room["items"], player.inventory)
+                    
+                    print_menu(player.current_room["exits"],  player.current_room["items"], player.inventory)
+                    
+                    command = normalise_input(EXTERNAL_INPUT)
+            
+                    # Execute the player's command
+                    execute_command(command)
+                    
+                    player.checkDeath()
+                    
+                    if player.current_room["name"] == "A Brightly Lit Room":
+                        player.health = 0
+                    
+                    print("\n=====================================\n\n")
+                    
+                    winCond = player.checkWin()
+                    
+                if(winCond and player.isAlive()):
+                    print("You've won!")
+            else:
+                fight_loop(enemy_id, command)
                 player.checkDeath()
-                
-                if player.current_room["name"] == "A Brightly Lit Room":
-                    player.health = 0
-                
-                print("\n=====================================\n\n")
-                
-                winCond = player.checkWin()
-                
-            if(winCond and player.isAlive()):
-                print("You've won!")
         else:
-            fight_loop(enemy_id, command)
-
+            pass
 # This is the entry point of our program
 def main():
     

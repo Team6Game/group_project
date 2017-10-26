@@ -80,15 +80,25 @@ class GlowDemo(ShowBase):
     
     mainThread = 0
 
+
+    def setText(self, textEntered=None):
+        self.sendMessage(textEntered)
+        print("ASD: " + textEntered)
+            
     def __init__(self):
+        mainThread = game.mainThread()
+        
+        
         # Initialize the ShowBase class from which we inherit, which will
         # create a window and set up everything we need for rendering into it.
         ShowBase.__init__(self)
         
         ################
         #callback function for when text is entered into the field with <Return>
-        def setText(textEntered=""):
-            textObject.setText(textEntered)
+        
+        
+
+            
              
         #clear the text
         def clearText():
@@ -107,7 +117,7 @@ class GlowDemo(ShowBase):
         textObject.setFont(fontToUse)
         #add button
         
-        b = DirectEntry(text = "" ,width=base.win.getXSize(), scale=0.05,command=setText(),initialText="Type Something", numLines = 2,focus=1,focusInCommand=clearText, entryFont=fontToUse, text_fg=(1.0,1.0,1.0,1.0), frameColor=(0.0,0.0,0.0,1.0))
+        b = DirectEntry(text = "" ,width=base.win.getXSize(), scale=0.05,command=self.setText,initialText="Type Something", numLines = 2,focus=1,focusInCommand=clearText, entryFont=fontToUse, text_fg=(1.0,1.0,1.0,1.0), frameColor=(0.0,0.0,0.0,1.0))
         b.reparentTo(base.a2dBottomLeft)
         b.setPos(+0.0,0, +0.15)
         
@@ -190,15 +200,15 @@ class GlowDemo(ShowBase):
 
         # Panda contains a built-in viewer that lets you view the results of
         # your render-to-texture operations.  This code configures the viewer.
-        self.accept("v", base.bufferViewer.toggleEnable)
-        self.accept("V", base.bufferViewer.toggleEnable)
+        #self.accept("v", base.bufferViewer.toggleEnable)
+        #self.accept("V", base.bufferViewer.toggleEnable)
         base.bufferViewer.setPosition("llcorner")
         base.bufferViewer.setLayout("hline")
         base.bufferViewer.setCardSize(0.652, 0)
 
         # event handling
         #self.accept("space", self.toggleGlow)
-        self.accept("enter", self.sendMessage)
+        #self.accept("enter", self.sendMessage(b.text))
         #self.accept("escape", sys.exit, [0])
 
         self.glowOn = True
@@ -212,7 +222,16 @@ class GlowDemo(ShowBase):
         self.tron.loop("running")
         self.interval.loop()
         
-        self.mainThread = game.mainThread()
+        #game.init()
+        
+        global winCond
+        winCond = False
+        
+        global player
+        player = game.Player()
+        
+        self.mainThread = game.mainThread
+        #self.mainThread.__init__()
         
            
     def updateStats(health, sanity, intelligence):
@@ -220,13 +239,14 @@ class GlowDemo(ShowBase):
         sanityObject.setText("Sanity: " + str(sanity))
         intObject.setText("Intelligence: " + str(intelligence))
 
-    def sendMessage(self):
-        
+    def sendMessage(self, COMMAND= ""):
+        if(self.mainThread != 0 and COMMAND != ""):
+            self.mainThread.cycle(self.mainThread, EXTERNAL_INPUT=COMMAND)
 
-    def run(self):
-        def __init__(self):
-            pass
-        super().run()
+    #def run(self):
+    #    def __init__(self):
+    #        pass
+    #   super().run()
 
         
 demo = GlowDemo()
@@ -250,7 +270,7 @@ thread2 = threading.Thread(target=runLoop())
 #thread.start()
 thread2.start()
 
-#thread.join
+thread.join
 #thread2.join
 
 #game.main()
