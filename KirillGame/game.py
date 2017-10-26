@@ -86,8 +86,8 @@ def print_enemy_room(room):
 def print_room(room):
     # Display room name
     
-    for i in range(0, 10):
-        print("\n")
+    
+    print("\n" * 25)
     
     print()
     print(room["name"].upper())
