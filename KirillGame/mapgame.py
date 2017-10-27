@@ -13,19 +13,7 @@ room_1 = {"name":"Library",
           }
 room_2 = {"name": "Amazon Rainforest",
           "description": 
-"""WELCOME TO Έρευνα!
-In this revolutionary text-based game you will be playing as the DR Kirill Sidorov.
-You’ve just gotten home from an extremely tiring day, and you head straight to bed.
-But you can’t stop thinking about the about 10 students who didn’t complete your survey before the deadline and it’s driving you insane.
-See without all of your survey’s, the group allocations that they are used for become less accurate causing a huge headache for you!
-But wait, you remember an article you read the other day, about a way to solve your daily issues in your dreams, by fabricating a perfect dream completely controlled by you,
-so you can ‘re-live’ a day but make it go your way. It’s called a lucid dream!  
-You prepare yourself to attempt the lucid dream, your aim is to find the about 10 students and force them to complete the surveys
-by bombarding them with your amazing papers (books) and the major weapon, your THESIS! Let’s hope they don’t question you!
-
-
-
-You have now entered your dream in a place that you don't recognise.\nYou can hear the sounds of birds, insects and the rustle of the trees that\nyou have just realised are surrounding you in every direction! To your amazement\nyou see an Amazon kingfisher, which means you must be in the Amazon Rainforest!\nWhy?! I don't know, it's your dream.""",
+"""You have now entered your dream in a place that you don't recognise.\nYou can hear the sounds of birds, insects and the rustle of the trees that\nyou have just realised are surrounding you in every direction! To your amazement\nyou see an Amazon kingfisher, which means you must be in the Amazon Rainforest!\nWhy?! I don't know, it's your dream.""",
           "exits": { "south": "Library", "west": "The White House", "east": "A Brightly Lit Room"},
           "items": [],
           "enemies": []
@@ -112,7 +100,7 @@ rooms = {
     "Bottom Of The Stairs": room_9,
     "Kirill's Office": room_10,
     "Senghennydd Court": room_11,
-    "Lecture Theatre": room_12,
+    "The Lecture Theatre": room_12,
     "A Brightly Lit Room": room_13
 
 }
